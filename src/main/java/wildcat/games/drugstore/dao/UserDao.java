@@ -32,5 +32,73 @@ public class UserDao {
         return rowsAffected;
     }
 
+    public int updateUser(String dni,User user) throws Exception{
+        MySqlConnection mySQLConnection = new MySqlConnection();
+        Connection con = mySQLConnection.getConnection();
+
+        String querySelect = "SELECT * FROM USERS WHERE dni = ?";
+
+        PreparedStatement ps = con.prepareStatement(querySelect);
+        ps.setString(1,dni);
+        ResultSet resultSet = ps.executeQuery();
+
+        int count=0;
+        while(resultSet.next()){
+            count++;
+        }
+
+        if(count==0){
+            return 0;
+        }else{
+            String queryUpdate = "UPDATE USERS SET name=?," +
+                    "lastname=?," +
+                    "sex=?," +
+                    "address=?," +
+                    "cellphone=?," +
+                    "username=?," +
+                    "pass=?" +
+                    "WHERE dni=?";
+
+            PreparedStatement psUpdate = con.prepareStatement(queryUpdate);
+            psUpdate.setString(1,user.getName());
+            psUpdate.setString(2,user.getLastname());
+            psUpdate.setString(3,user.getSex());
+            psUpdate.setString(4,user.getAddress());
+            psUpdate.setString(5,user.getCellphone());
+            psUpdate.setString(6,user.getUsername());
+            psUpdate.setString(7,user.getPass());
+            psUpdate.setString(8,dni);
+
+            return psUpdate.executeUpdate();
+        }
+    }
+
+    public User getUserByDni(String dni) throws Exception{
+        MySqlConnection mySQLConnection = new MySqlConnection();
+        Connection con = mySQLConnection.getConnection();
+
+        String querySelect = "SELECT * FROM USERS WHERE dni = ?";
+
+        PreparedStatement ps = con.prepareStatement(querySelect);
+        ps.setString(1,dni);
+        ResultSet resultSet = ps.executeQuery();
+
+        User user = new User();
+
+        while(resultSet.next()){
+            user.setName(resultSet.getString("name"));
+            user.setLastname(resultSet.getString("lastname"));
+            user.setSex(resultSet.getString("sex"));
+            user.setAddress(resultSet.getString("address"));
+            user.setCellphone(resultSet.getString("cellphone"));
+            user.setUsername(resultSet.getString("username"));
+            user.setPass(resultSet.getString("pass"));
+            break;
+        }
+
+        return user;
+
+    }
+
 
 }

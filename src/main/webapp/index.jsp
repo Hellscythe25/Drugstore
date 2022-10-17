@@ -15,6 +15,7 @@
 <h1><%= "Add user" %>
 </h1>
 <br/>
-<a href="AddUserServlet">- Add user -</a>
+<a href="AddUserServlet">->Add User<-</a>
+<a href="UpdateUserServlet">->Update User<-</a>
 </body>
 </html>
